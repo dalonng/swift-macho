@@ -9,8 +9,11 @@ update:
 release:
 	swift build -c release
 
-# install: release
-# 	install	
+format:
+	swift-format format --in-place --recursive "${PWD}/Sources/"
+	swift-format format --in-place --recursive "${PWD}/Tests/"
+	swift-format format --in-place Package.swift
+
 
 test:
 	swift test --parallel

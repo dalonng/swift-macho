@@ -1,0 +1,24 @@
+included:
+  - Plugins
+  - Source
+  - Tests
+analyzer_rules:
+  - unused_declaration
+  - unused_import
+
+identifier_name:
+  excluded:
+    - id
+large_tuple: 3
+number_separator:
+  minimum_length: 5
+file_name:
+  excluded:
+    - SwiftSyntax+SwiftLint.swift
+    - GeneratedTests.swift
+    - TestHelpers.swift
+
+function_body_length: 60
+type_body_length: 400
+
+indentation_width: 2

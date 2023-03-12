@@ -6,6 +6,9 @@ build:
 update:
 	swift package update
 
+run: build
+	./.build/debug/macho
+
 release:
 	swift build -c release
 

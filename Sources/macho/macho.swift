@@ -1,6 +1,9 @@
-public struct macho {
-  public private(set) var text = "Hello, World!"
+import Foundation
+import MachOKit
 
-  public init() {
+@main
+enum macho {
+  static func main() async throws {
+    await MachOCommand.main()
   }
 }

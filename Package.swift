@@ -3,23 +3,41 @@
 
 import PackageDescription
 
+let argumentParserDependency: Target.Dependency = .product(name: "ArgumentParser", package: "swift-argument-parser")
+
 let package = Package(
   name: "macho",
   products: [
+    .executable(name: "macho", targets: ["macho"]),
+
     .library(
-      name: "macho",
-      targets: ["macho"])
+      name: "MachOKit",
+      targets: ["MachOKit"]
+    ),
   ],
-  dependencies: [],
+  dependencies: [
+    .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.2"),
+    .package(url: "git@github.com:kylef/PathKit.git", from: "1.0.1"),
+  ],
   targets: [
-    .target(
+    .executableTarget(
       name: "macho",
-      dependencies: []),
+      dependencies: [
+        "MachOKit",
+        argumentParserDependency,
+        "PathKit",
+      ]
+    ),
+    .target(
+      name: "MachOKit",
+      dependencies: []
+    ),
     .testTarget(
       name: "machoTests",
-      dependencies: ["macho"],
+      dependencies: ["MachOKit"],
       resources: [
         .copy("Tests/bin")
-      ]),
+      ]
+    ),
   ]
 )

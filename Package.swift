@@ -7,6 +7,9 @@ let argumentParserDependency: Target.Dependency = .product(name: "ArgumentParser
 
 let package = Package(
   name: "macho",
+  platforms: [
+    .macOS(.v13)
+  ],
   products: [
     .executable(name: "macho", targets: ["macho"]),
 

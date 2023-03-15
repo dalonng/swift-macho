@@ -1,19 +1,4 @@
 import Foundation
-import MachOKit
-import ArgumentParser
-import PathKit
-
-struct MachOCommand: ParsableCommand {
-  init() {}
-
-  @Argument
-  var filePath: String
-
-  mutating func run() throws {
-    let macho = MachOFile(path: filePath)
-    macho.readheader()
-  }
-}
 
 extension Data {
   var hexEncodedString: String {

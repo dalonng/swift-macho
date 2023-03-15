@@ -33,7 +33,9 @@ let package = Package(
     ),
     .target(
       name: "MachOKit",
-      dependencies: []
+      dependencies: [
+        "PathKit"
+      ]
     ),
     .testTarget(
       name: "machoTests",

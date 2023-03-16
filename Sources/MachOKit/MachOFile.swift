@@ -5,7 +5,7 @@ public final class MachOFile {
 
   let fileHandle: FileHandle
 
-  var header: Header?
+  let header: Header
 
   public init(path: String) {
 
@@ -18,42 +18,41 @@ public final class MachOFile {
       fatalError("forReadingAtPath \(filePath) error.")
     }
     self.fileHandle = fileHandle
+    self.header = Self.readheader(fileHandle: fileHandle)
+    print("\(header)")
+
   }
 
-  public func readheader() {
-    do {
-      if let magic = try fileHandle.read(upToCount: 4) {
-        if let ft = MagicNumber(rawValue: magic.uint32) {
-          print("magic number: \(ft)")
-        } else {
-          print("unknow magic number: \(magic.uint32)")
-        }
-      }
-
-      if let cpuType = try fileHandle.read(upToCount: 4) {
-        print("cpuType: \(CpuType(rawValue: cpuType.uint32))")
-      }
-      if let cpuSubtype = try fileHandle.read(upToCount: 4) {
-        print("cpuSubtype: \(cpuSubtype.uint32)")
-      }
-      if let fileType = try fileHandle.read(upToCount: 4) {
-        if let ft = FileType(rawValue: fileType.uint32) {
-          print("fileType: \(ft)")
-        } else {
-          print("unknow fileType: \(fileType.uint32)")
-        }
-      }
-
-      if let loadCommandsCount = try fileHandle.read(upToCount: 4) {
-        print("loadCommandsCount: \(loadCommandsCount)")
-      }
-
-      if let loadCommandsSize = try fileHandle.read(upToCount: 4) {
-        print("loadCommandsSize: \(loadCommandsSize)")
-      }
-    } catch {
-      fatalError("read header error: \(error)")
+  static func readheader(fileHandle: FileHandle) -> Header {
+    var value = fileHandle.readUint32()
+    guard let magicNumber = MagicNumber(rawValue: value) else {
+      fatalError("unknow magic number: \(value)")
     }
+
+    value = fileHandle.readUint32()
+    let cpuType = CpuType(rawValue: value)
+
+    let cpuSubtype = fileHandle.readUint32()
+
+    value = fileHandle.readUint32()
+    guard let fileType = FileType(rawValue: value) else {
+      fatalError("unknow file type: \(value)")
+    }
+
+    value = fileHandle.readUint32()
+    let flags = Flags(rawValue: value)
+
+    return Header(
+      magicNumber: magicNumber,
+      cpuType: cpuType,
+      cpuSubtype: cpuSubtype,
+      fileType: fileType,
+      loadCommandsCount: fileHandle.readUint32(),
+      loadCommandsSize: fileHandle.readUint32(),
+      flags: flags,
+      reserved: fileHandle.readUint32()
+    )
+
   }
 
 }

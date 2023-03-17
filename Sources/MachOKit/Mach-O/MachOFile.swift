@@ -5,7 +5,7 @@ public final class MachOFile {
 
   let fileHandle: FileHandle
 
-  let header: Header
+  let header: MachHeader
 
   public init(path: String) {
 
@@ -23,7 +23,7 @@ public final class MachOFile {
 
   }
 
-  static func readheader(fileHandle: FileHandle) -> Header {
+  static func readheader(fileHandle: FileHandle) -> MachHeader {
     var value = fileHandle.readUint32()
     guard let magicNumber = MagicNumber(rawValue: value) else {
       fatalError("unknow magic number: \(value)")
@@ -42,13 +42,13 @@ public final class MachOFile {
     value = fileHandle.readUint32()
     let flags = Flags(rawValue: value)
 
-    return Header(
-      magicNumber: magicNumber,
+    return MachHeader(
+      magic: magicNumber,
       cpuType: cpuType,
       cpuSubtype: cpuSubtype,
       fileType: fileType,
-      loadCommandsCount: fileHandle.readUint32(),
-      loadCommandsSize: fileHandle.readUint32(),
+      ncmds: fileHandle.readUint32(),
+      sizeofcmds: fileHandle.readUint32(),
       flags: flags,
       reserved: fileHandle.readUint32()
     )

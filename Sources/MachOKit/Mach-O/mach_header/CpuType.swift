@@ -39,7 +39,7 @@ extension CpuType: CustomStringConvertible {
     case .x86_64: return "x86_64"
     case .arm: return "arm"
     case .arm64: return "arm64"
-    default: return "unknown"
+    default: return "unsupported"
     }
   }
 }

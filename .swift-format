@@ -2,7 +2,8 @@
     "version": 1,
     "lineLength": 200,
     "indentation": {
-        "spaces": 2
+        "spaces": 2,
+        "alignColons": true
     },
     "lineBreakBeforeEachArgument": true,
     "indentConditionalCompilationBlocks": false,

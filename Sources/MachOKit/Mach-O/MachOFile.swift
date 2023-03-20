@@ -7,6 +7,8 @@ public final class MachOFile {
 
   let header: MachHeader
 
+  // var segmentCommands: [SegmentCommand]
+
   public init(path: String) {
 
     let filePath = Path(path)
@@ -18,12 +20,12 @@ public final class MachOFile {
       fatalError("forReadingAtPath \(filePath) error.")
     }
     self.fileHandle = fileHandle
-    self.header = Self.readheader(fileHandle: fileHandle)
+    self.header = Self.readHeader(fileHandle: fileHandle)
     print("\(header)")
-
+    Self.readCmd(fileHandle: fileHandle)
   }
 
-  static func readheader(fileHandle: FileHandle) -> MachHeader {
+  static func readHeader(fileHandle: FileHandle) -> MachHeader {
     var value = fileHandle.readUint32()
     guard let magicNumber = MagicNumber(rawValue: value) else {
       fatalError("unknow magic number: \(value)")
@@ -52,6 +54,15 @@ public final class MachOFile {
       flags: flags,
       reserved: fileHandle.readUint32()
     )
+
+  }
+
+  static func readCmd(fileHandle: FileHandle) {
+    let cmdType = fileHandle.readUint32()
+    let loadCommandType = LoadCommandType(rawValue: cmdType)
+    let cmdsize = fileHandle.readUint32()
+
+    print("cmdType: 0x\(String(cmdType, radix: 16)), loadCommandType: \(loadCommandType), cmdsize: \(cmdsize)")
 
   }
 

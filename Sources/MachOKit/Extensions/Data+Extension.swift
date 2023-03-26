@@ -50,3 +50,33 @@ extension Data {
     return withUnsafeBytes { $0.load(fromByteOffset: offset, as: T.self) }
   }
 }
+
+// MARK: - String functions
+extension Data {
+  public var string: String? {
+    String(data: self, encoding: .utf8)
+  }
+}
+
+// MARK: - hex printing
+extension Data {
+
+  public func hexprint() {
+    var offset = 0
+    var line = ""
+    var ascii = ""
+    for (index, byte) in self.enumerated() {
+      line += String(format: "%02x ", byte)
+      ascii += (byte >= 32 && byte < 127) ? String(format: "%c", byte) : "."
+      offset += 1
+      if offset % 16 == 0 {
+        print(line + " " + ascii)
+        line = ""
+        ascii = ""
+      }
+    }
+    if line.count > 0 {
+      print(line + " " + ascii)
+    }
+  }
+}

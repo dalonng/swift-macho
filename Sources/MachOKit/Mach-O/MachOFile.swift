@@ -7,7 +7,7 @@ public final class MachOFile {
 
   let header: MachHeader
 
-  // var segmentCommands: [SegmentCommand]
+  var loadCommands = [LoadCommand]()
 
   public init(path: String) {
 
@@ -22,7 +22,7 @@ public final class MachOFile {
     self.fileHandle = fileHandle
     self.header = Self.readHeader(fileHandle: fileHandle)
     print("\(header)")
-    Self.readCmd(fileHandle: fileHandle)
+    readCmd(fileHandle: fileHandle)
   }
 
   static func readHeader(fileHandle: FileHandle) -> MachHeader {
@@ -41,6 +41,7 @@ public final class MachOFile {
       fatalError("unknow file type: \(value)")
     }
 
+    let ncmds = fileHandle.readUint32()
     value = fileHandle.readUint32()
     let flags = Flags(rawValue: value)
 
@@ -49,7 +50,7 @@ public final class MachOFile {
       cpuType: cpuType,
       cpuSubtype: cpuSubtype,
       fileType: fileType,
-      ncmds: fileHandle.readUint32(),
+      ncmds: ncmds,
       sizeofcmds: fileHandle.readUint32(),
       flags: flags,
       reserved: fileHandle.readUint32()
@@ -57,13 +58,13 @@ public final class MachOFile {
 
   }
 
-  static func readCmd(fileHandle: FileHandle) {
-    let cmdType = fileHandle.readUint32()
-    let loadCommandType = LoadCommandType(rawValue: cmdType)
-    let cmdsize = fileHandle.readUint32()
-
-    print("cmdType: 0x\(String(cmdType, radix: 16)), loadCommandType: \(loadCommandType), cmdsize: \(cmdsize)")
-
+  func readCmd(fileHandle: FileHandle) {
+    for _ in 0..<header.ncmds {
+      do {
+        loadCommands.append(try LoadCommand(fileHandle: fileHandle))
+      } catch {
+        fatalError("readCmd error: \(error)")
+      }
+    }
   }
-
 }

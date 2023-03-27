@@ -76,7 +76,7 @@ extension Data {
       }
     }
     if line.count > 0 {
-      print(line + " " + ascii)
+      print(line.formatString(fixedLenght: 48) + " " + ascii)
     }
   }
 }

@@ -12,7 +12,7 @@ let package = Package(
   ],
   products: [
     .executable(name: "macho", targets: ["macho"]),
-
+    .executable(name: "MachOUI", targets: ["machoui"]),
     .library(
       name: "MachOKit",
       targets: ["MachOKit"]
@@ -28,6 +28,13 @@ let package = Package(
       dependencies: [
         "MachOKit",
         argumentParserDependency,
+        "PathKit",
+      ]
+    ),
+    .executableTarget(
+      name: "machoui",
+      dependencies: [
+        "MachOKit",
         "PathKit",
       ]
     ),

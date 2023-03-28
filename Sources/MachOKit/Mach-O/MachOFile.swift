@@ -7,7 +7,7 @@ public final class MachOFile {
 
   let header: MachHeader
 
-  var loadCommands = [LoadCommand]()
+  var loadCommands = [LoadCommandable]()
 
   public init(path: String) {
 
@@ -61,7 +61,9 @@ public final class MachOFile {
   func readCmd(fileHandle: FileHandle) {
     for _ in 0..<header.ncmds {
       do {
-        loadCommands.append(try LoadCommand(fileHandle: fileHandle))
+        let command = try loadCommand(fileHandle: fileHandle)
+        print(command)
+        loadCommands.append(command)
       } catch {
         fatalError("readCmd error: \(error)")
       }

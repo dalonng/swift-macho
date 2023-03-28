@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Debug",
       "program": "${workspaceFolder}/.build/debug/macho",
-      "args": ["${workspaceFolder}/.build/debug/macho"],
+      "args": ["${workspaceFolder}/samples/main"],
       "cwd": "${workspaceFolder}",
     },
     {

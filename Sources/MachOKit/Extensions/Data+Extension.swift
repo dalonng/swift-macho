@@ -5,6 +5,12 @@ extension Data {
     return map { String(format: "%02hhx", $0) }.joined()
   }
 
+  var uint64: UInt64 {
+    withUnsafeBytes { unsafeRawBufferPointer in
+      unsafeRawBufferPointer.load(as: UInt64.self)
+    }
+  }
+
   var uint32: UInt32 {
     withUnsafeBytes { unsafeRawBufferPointer in
       unsafeRawBufferPointer.load(as: UInt32.self)

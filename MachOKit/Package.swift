@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -11,33 +11,13 @@ let package = Package(
     .macOS(.v13)
   ],
   products: [
-    .executable(name: "macho", targets: ["macho"]),
-    .executable(name: "MachOUI", targets: ["machoui"]),
-    .library(
-      name: "MachOKit",
-      targets: ["MachOKit"]
-    ),
+    .library(name: "MachOKit", targets: ["MachOKit"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.2"),
     .package(url: "git@github.com:kylef/PathKit.git", from: "1.0.1"),
   ],
   targets: [
-    .executableTarget(
-      name: "macho",
-      dependencies: [
-        "MachOKit",
-        argumentParserDependency,
-        "PathKit",
-      ]
-    ),
-    .executableTarget(
-      name: "machoui",
-      dependencies: [
-        "MachOKit",
-        "PathKit",
-      ]
-    ),
     .target(
       name: "MachOKit",
       dependencies: [
@@ -48,7 +28,7 @@ let package = Package(
       name: "machoTests",
       dependencies: ["MachOKit"],
       resources: [
-        .copy("Tests/bin")
+        // .copy("Tests/bin")
       ]
     ),
   ]

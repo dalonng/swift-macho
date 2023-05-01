@@ -1,7 +1,7 @@
 # make
 
 xcodeproj:
-	swift package generate-xcodeproj
+	xcodegen generate
 
 build:
 	swift build

@@ -1,0 +1,10 @@
+name: MachOUI
+options:
+  bundleIdPrefix: com.mototo.machoui
+targets:
+  SaladMaker:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: Sources/machoui
